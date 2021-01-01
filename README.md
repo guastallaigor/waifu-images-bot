@@ -49,4 +49,4 @@ DISCORD_LINK=
 
 ## License
 
-[MIT](https://github.com/guastallaigor/waifu-images-bot/blob/master/LICENSE)
+[MIT © guastallaigor](https://github.com/guastallaigor/waifu-images-bot/blob/master/LICENSE)
