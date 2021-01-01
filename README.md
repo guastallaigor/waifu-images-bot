@@ -2,10 +2,11 @@
   <img src="https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png" width="200px">
   <h1>Waifu Images Bot</h1>
 </div>
+
 <p align="center">
-  Discord Bot!
-  Get a random cute waifu image everytime you type any command!
-  This bot uses the Waifu Pics API (https://github.com/Waifu-pics/api).
+  Discord Bot.
+  Get a random waifu image everytime you type any command!
+  This bot uses the <a href="https://github.com/Waifu-pics/api" target="_blank">Waifu Pics API</a>.
   Type !help to get a list of all available commands.
 </p>
 
@@ -41,7 +42,7 @@ DISCORD_LINK=
 <div>
   <p>
     <a href="https://vercel.com/?utm_source=hotsapi" target="_blank" rel="noopener">
-      <img src="./.github/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
+      <img src="./img/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
     </a>
   </p>
 </div>
