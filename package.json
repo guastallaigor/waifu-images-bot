@@ -1,0 +1,30 @@
+{
+  "name": "waifu-bot",
+  "version": "0.1.0",
+  "main": "app.js",
+  "repository": "https://github.com/guastallaigor/waifu-bot.git",
+  "author": "guastallaigor <limaguastallaigor@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "prettier": "prettier --check 'src/**/*.js'",
+    "dev": "nodemon ./src/app.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": "^12"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1"
+  }
+}
