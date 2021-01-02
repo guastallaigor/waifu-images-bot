@@ -1,18 +1,31 @@
 <div align="center">
-  <img src="https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png" width="200px">
+  <img src="https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png" width="200px" alt="Rem Logo">
   <h1>Waifu Images Bot</h1>
+  <br />
+  <p>
+    <a href="https://github.com/guastallaigor/waifu-images-bot/blob/main/package.json"><img src="https://img.shields.io/david/guastallaigor/waifu-images-bot" alt="Dependencies" /></a>
+    <a href="https://prettier.io/"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
+    <a href="https://github.com/guastallaigor/waifu-images-bot/blob/main/LICENSE"><img src="https://img.shields.io/github/license/guastallaigor/waifu-images-bot" alt="License" /></a>    
+  </p>  
 </div>
 
-<p align="center">
-  Discord Bot.
-  Get a random waifu image everytime you type any command!
-  This bot uses the <a href="https://github.com/Waifu-pics/api" target="_blank">Waifu Pics API</a>.
-  Type !help to get a list of all available commands.
-</p>
+Discord Bot\
+Get a random waifu image everytime you type any command!\
+This bot uses the <a href="https://github.com/Waifu-pics/api" target="_blank">Waifu Pics API</a>\
+Type ?help to get a list of all available commands
+
+> Notes: Some of the commands may be unavailable due to lack of images from the API. Also sometimes you may get an image that's larger than 8MB, which is going to be blocked by Discord.
 
 ## Usage
 
 Add to your server https://discord.com/oauth2/authorize?client_id=794404553088827443&scope=bot&permissions=44096
+
+## Demo
+
+<div align="center">
+  <img src="./.github/demo1.png" alt="Demo 1">
+  <img src="./.github/demo2.png" alt="Demo 2">
+</div>
 
 ## Development
 
