@@ -4,7 +4,12 @@ import dotenv from "dotenv";
 import { categories } from "./categories.js";
 import emojis from "./emojis.js";
 
-import { defaultMessage, waifuMessage } from "./commands.js";
+import {
+  defaultMessage,
+  waifuMessage,
+  nsfwBlockMessage,
+  errorMessage,
+} from "./commands.js";
 
 dotenv.config();
 
@@ -17,7 +22,7 @@ client.once("ready", () => {
       client && client.guilds && client.guilds.cache && client.guilds.cache.size
     } guilds`
   );
-  client.user.setActivity(`type !help`);
+  client.user.setActivity(`type ?help`);
 });
 
 client.on("message", async (message) => {
@@ -37,6 +42,10 @@ client.on("message", async (message) => {
 
     if (!categoryObject) return;
 
+    if (!categoryObject.sfw && !message.channel.nsfw) {
+      return message.channel.send(nsfwBlockMessage());
+    }
+
     const instance = axios.create({
       baseURL: "https://waifu.pics/api",
       timeout: 1000,
@@ -54,7 +63,7 @@ client.on("message", async (message) => {
     await waifu.react(emojis.thumbsUp);
     await waifu.react(emojis.thumbsDown);
   } catch (err) {
-    console.log(err);
+    return message.channel.send(errorMessage());
   }
 });
 

@@ -21,10 +21,10 @@ export const defaultMessage = () => {
       "Available commands:",
       `${categories
         .map((category) => {
-          categoryReturn = `!${category.command}`;
+          categoryReturn = `?${category.command}`;
 
           if (!category.sfw && firstNSFW) {
-            categoryReturn = `\n!${category.command}`;
+            categoryReturn = `\n?${category.command}`;
             firstNSFW = false;
           }
 
@@ -51,4 +51,32 @@ export const waifuMessage = (url, name) => {
     )
     .setTitle(capitalize(name))
     .addField(`What did you think of this waifu?`, `Add your reactions below!`);
+};
+
+export const nsfwBlockMessage = () => {
+  return new Discord.MessageEmbed()
+    .setColor("#EF4444")
+    .attachFiles(["./img/kimochiwarui.jpg"])
+    .setAuthor(
+      "Waifu Images Bot",
+      "https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png"
+    )
+    .addField(
+      `You're not allowed to use NSFW commands in this channel  ${emojis.sad}`,
+      `This channel is SFW`
+    );
+};
+
+export const errorMessage = () => {
+  return new Discord.MessageEmbed()
+    .setColor("#EF4444")
+    .attachFiles(["./img/sad.gif"])
+    .setAuthor(
+      "Waifu Images Bot",
+      "https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png"
+    )
+    .addField(
+      `Something went wrong with your command  ${emojis.sad}`,
+      `You may be able to try again`
+    );
 };
