@@ -91,16 +91,6 @@ export const categories = [
   },
   {
     sfw: true,
-    name: "smile",
-    command: "smile",
-  },
-  {
-    sfw: true,
-    name: "wave",
-    command: "wave",
-  },
-  {
-    sfw: true,
     name: "highfive",
     command: "highfive",
   },
@@ -158,11 +148,6 @@ export const categories = [
     sfw: true,
     name: "cringe",
     command: "cringe",
-  },
-  {
-    sfw: true,
-    name: "blush",
-    command: "blush",
   },
   {
     sfw: false,
