@@ -23,8 +23,8 @@ Add to your server https://discord.com/oauth2/authorize?client_id=79440455308882
 ## Demo
 
 <div align="center">
-  <img src="./.github/demo1.png" alt="Demo 1">
   <img src="./.github/demo2.png" alt="Demo 2">
+  <img src="./.github/demo1.png" alt="Demo 1">
 </div>
 
 ## Development
