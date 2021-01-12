@@ -3,7 +3,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { categories } from "./categories.js";
 import emojis from "./emojis.js";
-
+import ImagesCache from "./images-cache.js";
 import {
   defaultMessage,
   waifuMessage,
@@ -21,8 +21,6 @@ const sendWaifuMessage = async (message, url, categoryName) => {
 };
 
 const client = new Discord.Client();
-let imagesCache = [];
-let url = "";
 
 client.once("ready", () => {
   console.log("Bot ready...");
@@ -55,9 +53,12 @@ client.on("message", async (message) => {
       return message.channel.send(nsfwBlockMessage());
     }
 
-    if (imagesCache && imagesCache.length) {
-      url = imagesCache.pop();
-      await sendWaifuMessage(message, url, categoryObject.name);
+    const type = categoryObject.sfw ? "sfw" : "nsfw";
+    const category = categoryObject.name;
+
+    if (ImagesCache.hasImages(type, category)) {
+      const url = ImagesCache.getImage(type, category);
+      await sendWaifuMessage(message, url, category);
       return;
     }
 
@@ -65,17 +66,16 @@ client.on("message", async (message) => {
       baseURL: "https://waifu.pics/api/many",
       timeout: 1000,
     });
-    const typeURL = categoryObject.sfw ? "sfw" : "nsfw";
-    const { data } = await instance.post(`/${typeURL}/${categoryObject.name}`, {
+    const { data } = await instance.post(`/${type}/${category}`, {
       exclude: [],
     });
 
     if (!data || !data.files) return;
 
     const { files } = data;
-    imagesCache = [...files];
-    url = imagesCache.pop();
-    await sendWaifuMessage(message, url, categoryObject.name);
+    ImagesCache.setImages(type, category, files);
+    const url = ImagesCache.getImage(type, category);
+    await sendWaifuMessage(message, url, category);
   } catch (err) {
     return message.channel.send(errorMessage());
   }
