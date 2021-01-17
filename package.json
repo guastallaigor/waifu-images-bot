@@ -1,15 +1,30 @@
 {
-  "name": "waifu-bot",
+  "name": "waifu-images-bot",
   "version": "0.2.1",
   "main": "app.js",
-  "repository": "https://github.com/guastallaigor/waifu-bot.git",
-  "author": "guastallaigor <limaguastallaigor@gmail.com>",
+  "private": false,
+  "repository": "https://github.com/guastallaigor/waifu-images-bot.git",
+  "description": "Discord Bot. Get a random waifu image everytime you type any command",
+  "homepage": "https://github.com/guastallaigor/vue-paycard#readme",
+  "author": "Igor Guastalla de Lima <limaguastallaigor@gmail.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guastallaigor/waifu-images-bot/issues"
+  },
   "scripts": {
     "start": "node ./src/app.js",
     "prettier": "prettier --check 'src/**/*.js'",
     "dev": "nodemon ./src/app.js"
   },
+  "keywords": [
+    "discord",
+    "bot",
+    "discord-bot",
+    "waifu",
+    "waifu-images-bot",
+    "waifu-images",
+    "waifu-image"
+  ],
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^12.2.0",
