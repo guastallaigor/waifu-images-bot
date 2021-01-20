@@ -4,7 +4,7 @@
   <br />
   <p>
     <a href="https://top.gg/bot/794404553088827443">
-      <img src="https://top.gg/api/widget/794404553088827443.svg" alt="Waifu Images Bot" />
+      <img src="https://top.gg/api/widget/status/794404553088827443.svg" alt="Waifu Images Bot" />
     </a>
     <a href="https://github.com/guastallaigor/waifu-images-bot/blob/main/package.json"><img src="https://img.shields.io/david/guastallaigor/waifu-images-bot" alt="Dependencies" /></a>
     <a href="https://github.com/guastallaigor/waifu-images-bot/blob/main/LICENSE"><img src="https://img.shields.io/github/license/guastallaigor/waifu-images-bot" alt="License" /></a>    
