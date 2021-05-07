@@ -1,6 +1,6 @@
 {
   "name": "waifu-images-bot",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "app.js",
   "private": false,
   "repository": "https://github.com/guastallaigor/waifu-images-bot.git",
@@ -32,7 +32,7 @@
   },
   "type": "module",
   "engines": {
-    "node": "^12"
+    "node": ">=12.0.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",

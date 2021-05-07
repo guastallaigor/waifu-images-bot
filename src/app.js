@@ -63,12 +63,13 @@ client.on("message", async (message) => {
     }
 
     const instance = axios.create({
-      baseURL: "https://waifu.pics/api/many",
+      baseURL: "https://api.waifu.pics/many",
       timeout: 1000,
     });
-    const { data } = await instance.post(`/${type}/${category}`, {
+    const response = await instance.post(`/${type}/${category}`, {
       exclude: [],
     });
+    const data = response?.data;
 
     if (!data || !data.files) return;
 
