@@ -20,8 +20,6 @@ Type ?help to get a list of all available commands
 
 ## Usage
 
-**This bot has reached the maximum limit of servers he can be in , since it is not verified. I've already submitted for Discord's verification process, but I don't know if or when Discord is going to approve it.**
-
 Add to your server https://discord.com/oauth2/authorize?client_id=794404553088827443&scope=bot&permissions=44096
 
 ## Demo
