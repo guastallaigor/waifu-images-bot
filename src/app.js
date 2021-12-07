@@ -1,9 +1,9 @@
-import Discord from "discord.js";
-import axios from "axios";
+import { Client, Intents } from "discord.js";
 import dotenv from "dotenv";
 import { categories } from "./categories.js";
 import emojis from "./emojis.js";
 import ImagesCache from "./images-cache.js";
+import Http from "./http.js";
 import {
   defaultMessage,
   waifuMessage,
@@ -13,14 +13,26 @@ import {
 
 dotenv.config();
 
-const sendWaifuMessage = async (message, url, categoryName) => {
-  const waifu = await message.channel.send(waifuMessage(url, categoryName));
-  await waifu.react(emojis.smiley);
-  await waifu.react(emojis.thumbsUp);
-  await waifu.react(emojis.thumbsDown);
+const sendWaifuMessage = async (channel, url, categoryName) => {
+  const message = await channel.send({
+    embeds: [waifuMessage(url, categoryName)],
+    files: [url],
+  });
+  await Promise.allSettled([
+    message.react(emojis.smiley),
+    message.react(emojis.thumbsUp),
+    message.react(emojis.thumbsDown),
+  ]);
 };
 
-const client = new Discord.Client();
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MESSAGE_TYPING,
+  ],
+});
 
 client.once("ready", () => {
   console.log("Bot ready...");
@@ -32,41 +44,51 @@ client.once("ready", () => {
   client.user.setActivity(`type ?help`);
 });
 
-client.on("message", async (message) => {
+client.on("messageCreate", async ({ channel, author, content }) => {
   const prefix = process.env.DISCORD_PREFIX;
 
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!content.startsWith(prefix) || author.bot) return;
 
   try {
-    const args = message.content.slice(prefix.length).split(/ +/);
+    const args = content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLocaleLowerCase();
 
     if (command === "help") {
-      return message.channel.send(defaultMessage());
+      return channel.send({
+        embeds: [defaultMessage()],
+        files: ["./img/rem.jpg"],
+      });
     }
 
     const categoryObject = categories.find((it) => it.command === command);
-
     if (!categoryObject) return;
 
-    if (!categoryObject.sfw && !message.channel.nsfw) {
-      return message.channel.send(nsfwBlockMessage());
+    if (!categoryObject.sfw && !channel.nsfw) {
+      return channel.send({
+        embeds: [nsfwBlockMessage()],
+        files: ["./img/kimochiwarui.jpg"],
+      });
     }
 
     const type = categoryObject.sfw ? "sfw" : "nsfw";
     const category = categoryObject.name;
+    const payload = {
+      type,
+      category,
+    };
+    const keyName = ImagesCache.composeKey(payload);
+    let key = ImagesCache.keys.get(keyName);
 
-    if (ImagesCache.hasImages(type, category)) {
-      const url = ImagesCache.getImage(type, category);
-      await sendWaifuMessage(message, url, category);
-      return;
+    if (!key) {
+      key = ImagesCache.addKey(payload);
     }
 
-    const instance = axios.create({
-      baseURL: "https://api.waifu.pics/many",
-      timeout: 1000,
-    });
-    const response = await instance.post(`/${type}/${category}`, {
+    if (ImagesCache.hasImages(key)) {
+      const url = ImagesCache.getImage(key);
+      return sendWaifuMessage(channel, url, category);
+    }
+
+    const response = await Http.instance.post(`/${type}/${category}`, {
       exclude: [],
     });
     const data = response?.data;
@@ -74,11 +96,11 @@ client.on("message", async (message) => {
     if (!data || !data.files) return;
 
     const { files } = data;
-    ImagesCache.setImages(type, category, files);
-    const url = ImagesCache.getImage(type, category);
-    await sendWaifuMessage(message, url, category);
+    ImagesCache.setImages(key, files);
+    const url = ImagesCache.getImage(key);
+    return sendWaifuMessage(channel, url, category);
   } catch (err) {
-    return message.channel.send(errorMessage());
+    return channel.send({ embeds: [errorMessage()], files: ["./img/sad.gif"] });
   }
 });
 

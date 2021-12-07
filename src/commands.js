@@ -12,7 +12,6 @@ export const defaultMessage = () => {
   let firstNSFW = true;
   return new Discord.MessageEmbed()
     .setColor("#A1C9F7")
-    .attachFiles(["./img/rem.jpg"])
     .setAuthor(
       "Waifu Images Bot",
       "https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png"
@@ -43,7 +42,6 @@ export const defaultMessage = () => {
 export const waifuMessage = (url, name) => {
   return new Discord.MessageEmbed()
     .setColor("#A1C9F7")
-    .attachFiles([url])
     .setThumbnail(url)
     .setAuthor(
       "Waifu Images Bot",
@@ -56,7 +54,6 @@ export const waifuMessage = (url, name) => {
 export const nsfwBlockMessage = () => {
   return new Discord.MessageEmbed()
     .setColor("#EF4444")
-    .attachFiles(["./img/kimochiwarui.jpg"])
     .setAuthor(
       "Waifu Images Bot",
       "https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png"
@@ -70,7 +67,6 @@ export const nsfwBlockMessage = () => {
 export const errorMessage = () => {
   return new Discord.MessageEmbed()
     .setColor("#EF4444")
-    .attachFiles(["./img/sad.gif"])
     .setAuthor(
       "Waifu Images Bot",
       "https://ik.imagekit.io/6xhf1gnexgdgk/rem-avatar_UW2Fsd4Zo.png"
