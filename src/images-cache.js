@@ -1,31 +1,32 @@
 class ImagesCache {
-  constructor(images = []) {
-    this.images = images;
+  constructor() {
+    this.keys = new Map();
+    this.images = new WeakMap();
   }
 
-  hasImages(type, category) {
-    if (!this.images) return false;
-
-    const key = this.getKey(type, category);
-    return !!(this.images[key] && this.images[key].length);
+  addKey(payload) {
+    const key = this.composeKey(payload);
+    this.keys.set(key, payload);
+    return payload;
   }
 
-  getImage(type, category) {
-    const key = this.getKey(type, category);
-    const images = this.images[key];
+  hasImages(key) {
+    return !!(this.images.has(key) && this.images.get(key)?.length);
+  }
 
+  getImage(key) {
+    const images = this.images.get(key);
     if (!images || !images.length) return "";
-
     return images.pop();
   }
 
-  setImages(type, category, images) {
-    const key = this.getKey(type, category);
-    this.images[key] = [...images];
+  setImages(key, images) {
+    this.images.set(key, [...images]);
   }
 
-  getKey(type, category) {
-    return `${type}-${category}`;
+  composeKey(payload) {
+    if (!payload.type || !payload.category) return "";
+    return `${payload.type}-${payload.category}`;
   }
 }
 
