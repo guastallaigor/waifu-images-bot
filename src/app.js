@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, REST, Routes, AttachmentBuilder } from "discord.js";
+import { Client, Intents } from "discord.js";
 import dotenv from "dotenv";
 import { categories } from "./categories.js";
 import emojis from "./emojis.js";
@@ -13,10 +13,10 @@ import {
 
 dotenv.config();
 
-const sendWaifuMessage = async (interaction, url, categoryName) => {
-  const message = await interaction.channel.send({
+const sendWaifuMessage = async (channel, url, categoryName) => {
+  const message = await channel.send({
     embeds: [waifuMessage(url, categoryName)],
-    files: [new AttachmentBuilder(url)],
+    files: [url],
   });
   await Promise.allSettled([
     message.react(emojis.smiley),
@@ -25,59 +25,48 @@ const sendWaifuMessage = async (interaction, url, categoryName) => {
   ]);
 };
 
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
-
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
-
-    const commands = categories.map(category => ({ name: category.command, description: category.description }));
-    await rest.put(Routes.applicationCommands(process.env.DISCORD_APP_ID, ''), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error, ":error");
-  }
-})();
-
-
 const client = new Client({
   intents: [
-    GatewayIntentBits.Guilds,
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MESSAGE_TYPING,
   ],
 });
 
 client.once("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
   console.log("Bot ready...");
   console.log(
     `Bot available in ${
       client && client.guilds && client.guilds.cache && client.guilds.cache.size
     } guilds`
   );
-  client.user.setActivity(`type /help`);
+  client.user.setActivity(`type ?help`);
 });
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+client.on("messageCreate", async ({ channel, author, content }) => {
+  const prefix = process.env.DISCORD_PREFIX;
+
+  if (!content.startsWith(prefix) || author.bot) return;
 
   try {
-    const { commandName } = interaction;
+    const args = content.slice(prefix.length).split(/ +/);
+    const command = args.shift().toLocaleLowerCase();
 
-    if (commandName === "help") {
-      return interaction.channel.send({
+    if (command === "help") {
+      return channel.send({
         embeds: [defaultMessage()],
-        files: [new AttachmentBuilder("./img/rem.jpg")],
+        files: ["./img/rem.jpg"],
       });
     }
 
-    const categoryObject = categories.find((it) => it.command === commandName);
+    const categoryObject = categories.find((it) => it.command === command);
     if (!categoryObject) return;
 
-    if (!categoryObject.sfw && !interaction.nsfw) {
-      return interaction.channel.send({
+    if (!categoryObject.sfw && !channel.nsfw) {
+      return channel.send({
         embeds: [nsfwBlockMessage()],
-        files: [new AttachmentBuilder("./img/kimochiwarui.jpg")],
+        files: ["./img/kimochiwarui.jpg"],
       });
     }
 
@@ -96,7 +85,7 @@ client.on("interactionCreate", async (interaction) => {
 
     if (ImagesCache.hasImages(key)) {
       const url = ImagesCache.getImage(key);
-      return sendWaifuMessage(interaction, url, category);
+      return sendWaifuMessage(channel, url, category);
     }
 
     const response = await Http.instance.post(`/${type}/${category}`, {
@@ -109,10 +98,9 @@ client.on("interactionCreate", async (interaction) => {
     const { files } = data;
     ImagesCache.setImages(key, files);
     const url = ImagesCache.getImage(key);
-    return sendWaifuMessage(interaction, url, category);
+    return sendWaifuMessage(channel, url, category);
   } catch (err) {
-    console.log(err, ':error');
-    return interaction.channel.send({ embeds: [errorMessage()], files: [new AttachmentBuilder("./img/sad.gif")] });
+    return channel.send({ embeds: [errorMessage()], files: ["./img/sad.gif"] });
   }
 });
 
